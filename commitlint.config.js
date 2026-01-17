@@ -1,5 +1,6 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
+  plugins: ['@checkmarkdevtools/commitlint-plugin-rai'],
   rules: {
     'type-enum': [
       2,
@@ -20,5 +21,7 @@ module.exports = {
     ],
     'subject-case': [2, 'never', ['upper-case']],
     'header-max-length': [2, 'always', 100],
+    'rai-footer-exists': [2, 'always'],
+    'signed-off-by': [1, 'always'],
   },
 };

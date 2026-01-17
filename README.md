@@ -156,9 +156,15 @@ Add these scripts to your `package.json`:
 - **Node.js**: 14.x or higher recommended
 - **Prettier**: v3.x recommended
 
-## License
+## About the License ⚖️
 
-MIT
+This project exists to standardize linting behavior across environments. It’s meant to be used, extended, and reused inside real codebases without ceremony.
+
+You’re free to use this configuration, fork it, adapt it for your own projects, and run it internally. That’s the expected use case.
+
+What you can’t do is package it as a paid product, service, or commercial offering without permission. If this configuration becomes part of something you sell or monetize, that requires a conversation first.
+
+This repository is licensed under the PolyForm Shield License 1.0.0. Public forks or substantial reuse require attribution. No warranties are provided, no endorsements are implied, and if it breaks, that’s on whoever wired it in. 💎
 
 ## Contributing
 
