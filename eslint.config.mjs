@@ -3,21 +3,31 @@
  * Enterprise-grade configuration with Jest, Airbnb, and Prettier support
  */
 
+import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import airbnbBase from 'eslint-config-airbnb-base';
-import prettierConfig from 'eslint-config-prettier';
 import jestPlugin from 'eslint-plugin-jest';
-import importPlugin from 'eslint-plugin-import';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Mimic CommonJS __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Initialize FlatCompat for legacy config compatibility
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+});
 
 export default [
   // Base recommended rules
   js.configs.recommended,
   
-  // Airbnb base configuration
-  ...airbnbBase,
+  // Airbnb base configuration (using FlatCompat for legacy format)
+  ...compat.extends('airbnb-base'),
   
-  // Prettier integration (must be last to override formatting rules)
-  prettierConfig,
+  // Prettier integration (must come after airbnb to override formatting rules)
+  ...compat.extends('prettier'),
   
   // Main configuration
   {
@@ -31,6 +41,10 @@ export default [
         exports: 'writable',
         module: 'readonly',
         require: 'readonly',
+        global: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
         
         // Jest globals
         afterAll: 'readonly',
@@ -50,12 +64,12 @@ export default [
     
     plugins: {
       jest: jestPlugin,
-      import: importPlugin,
     },
     
     rules: {
-      // Enforce strict mode
-      'strict': ['error', 'global'],
+      // Enforce strict mode in appropriate contexts
+      // Using 'safe' instead of 'global' for better module compatibility
+      'strict': ['error', 'safe'],
       
       // Prevent warning comments that could bypass quality gates
       // This prevents TODO/FIXME with eslint-disable or nosonar

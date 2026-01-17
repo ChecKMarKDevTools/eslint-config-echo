@@ -30,8 +30,9 @@ module.exports = {
   },
   
   rules: {
-    // Enforce strict mode
-    'strict': ['error', 'global'],
+    // Enforce strict mode in appropriate contexts
+    // Using 'safe' instead of 'global' for better module compatibility
+    'strict': ['error', 'safe'],
     
     // Prevent warning comments that could bypass quality gates
     // This prevents TODO/FIXME with eslint-disable or nosonar

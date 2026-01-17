@@ -46,7 +46,18 @@ Or in `.eslintrc.json`:
 
 ### ESLint v9 (ESM/Flat Config)
 
-Create or update your `eslint.config.js`:
+Create or update your `eslint.config.mjs`:
+
+```javascript
+import echoConfig from '@checkmarkdevtools/eslint-config-echo';
+
+export default [
+  ...echoConfig,
+  // Your custom configurations
+];
+```
+
+Or in `eslint.config.js` if your project has `"type": "module"` in package.json:
 
 ```javascript
 import echoConfig from '@checkmarkdevtools/eslint-config-echo';
