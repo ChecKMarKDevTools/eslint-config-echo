@@ -22,6 +22,6 @@ module.exports = {
     'subject-case': [2, 'never', ['upper-case']],
     'header-max-length': [2, 'always', 100],
     'rai-footer-exists': [2, 'always'],
-    'signed-off-by': [1, 'always'],
+    'signed-off-by-exists': [1, 'always'],
   },
 };

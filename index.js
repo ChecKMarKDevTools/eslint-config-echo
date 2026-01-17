@@ -1,85 +1,63 @@
 /**
- * ESLint Configuration for v8 (CommonJS)
- * Enterprise-grade configuration with Jest, Airbnb, and Prettier support
+ * ESLint v8 Legacy Config (CommonJS)
+ *
+ * Traditional .eslintrc-style configuration for ESLint v8.x
  */
 
 module.exports = {
   env: {
-    es2022: true,
+    es2024: true,
     node: true,
-    'jest/globals': true,
   },
 
-  extends: ['airbnb-base', 'plugin:jest/recommended', 'prettier'],
+  extends: ['eslint-config-prettier'],
 
-  plugins: ['jest'],
+  plugins: ['unused-imports', 'sonarjs', 'yml'],
 
   parserOptions: {
-    ecmaVersion: 2022,
+    ecmaVersion: 2024,
     sourceType: 'module',
   },
 
-  globals: {
-    // Jest globals are handled by 'jest/globals' env
-  },
-
   rules: {
-    // Enforce strict mode in appropriate contexts
-    // Using 'safe' instead of 'global' for better module compatibility
-    strict: ['error', 'safe'],
-
-    // Prevent warning comments that could bypass quality gates
-    // This prevents TODO/FIXME with eslint-disable or nosonar
-    'no-warning-comments': [
-      'warn',
-      {
-        terms: ['eslint-disable', 'nosonar'],
-        location: 'anywhere',
-      },
-    ],
-
-    // Allow scoped imports/requires for better module organization
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: true,
-        optionalDependencies: false,
-        peerDependencies: false,
-      },
-    ],
-
-    // ============================================
-    // PLACEHOLDER: Individual Rule Overrides
-    // ============================================
-    // Add specific rule customizations below as needed in future iterations
-    // Examples:
-    // 'no-console': 'warn',
-    // 'max-len': ['error', { code: 120 }],
-    // 'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    // ============================================
+    'no-console': 'error',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+    'prefer-const': 'error',
+    'no-var': 'error',
+    'unused-imports/no-unused-imports': 'error',
+    'no-unsafe-optional-chaining': 'error',
   },
 
   overrides: [
-    // Jest test files
     {
-      files: ['**/__tests__/**/*', '**/*.{spec,test}.{js,jsx,ts,tsx}'],
-      env: {
-        'jest/globals': true,
+      files: ['**/*.cjs'],
+      parserOptions: {
+        sourceType: 'script',
       },
+    },
+    {
+      files: ['test/**/*.{js,mjs,cjs}', '**/*.{spec,test}.{js,mjs,cjs}', '**/*test*.{js,mjs,cjs}'],
       rules: {
-        // Allow scoped requires in test files
-        'global-require': 'off',
-        'import/no-dynamic-require': 'off',
-
-        // ============================================
-        // PLACEHOLDER: Test-Specific Rule Overrides
-        // ============================================
-        // Add test-specific rule customizations below as needed
-        // Examples:
-        // 'jest/expect-expect': 'warn',
-        // 'jest/no-disabled-tests': 'warn',
-        // ============================================
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector: 'TryStatement',
+            message:
+              'Do not use try/catch in test files. Use expect(...).rejects / .toThrow() (or equivalent) for error assertions.',
+          },
+          {
+            selector: 'CatchClause',
+            message:
+              'Do not use catch clauses in test files. Assert errors via expect(...).rejects / .toThrow() instead.',
+          },
+        ],
       },
+    },
+    {
+      files: ['**/*.{yml,yaml}'],
+      parser: 'yaml-eslint-parser',
+      extends: ['plugin:yml/recommended'],
     },
   ],
 };

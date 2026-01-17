@@ -23,7 +23,7 @@ Use this pattern when configs need access to the plugin object:
 
 ```js
 Object.assign(plugin.configs, {
-  "flat/recommended": [
+  'flat/recommended': [
     {
       plugins: {
         [plugin.meta.namespace]: plugin,
@@ -34,7 +34,7 @@ Object.assign(plugin.configs, {
     },
   ],
 
-  "legacy-recommended": {
+  'legacy-recommended': {
     plugins: [plugin.meta.namespace],
     rules: {
       // "<namespace>/<ruleId>": "error"

@@ -1,12 +1,12 @@
 ## ESLint v9 Flat Config Consumer
 
 ```js
-import { defineConfig } from "eslint/config";
-import myPlugin from "eslint-plugin-yourplugin";
+import { defineConfig } from 'eslint/config';
+import myPlugin from 'eslint-plugin-yourplugin';
 
 export default defineConfig([
   {
-    files: ["**/*.{js,ts}"],
+    files: ['**/*.{js,ts}'],
     plugins: {
       [myPlugin.meta.namespace]: myPlugin,
     },
@@ -22,7 +22,7 @@ export default defineConfig([
 ```jsonc
 {
   "plugins": ["yourplugin-namespace"],
-  "extends": ["yourplugin-namespace/legacy-recommended"]
+  "extends": ["yourplugin-namespace/legacy-recommended"],
 }
 ```
 
@@ -33,6 +33,6 @@ export default defineConfig([
 ```jsonc
 {
   "plugins": ["yourplugin-namespace"],
-  "extends": ["yourplugin-namespace/recommended"]
+  "extends": ["yourplugin-namespace/recommended"],
 }
 ```
