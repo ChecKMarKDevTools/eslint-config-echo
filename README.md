@@ -87,6 +87,7 @@ export default [
 ### Test File Support
 
 Automatically detects and applies Jest-specific rules to:
+
 - Files in `__tests__` directories
 - Files matching `*.spec.js`, `*.test.js` patterns
 

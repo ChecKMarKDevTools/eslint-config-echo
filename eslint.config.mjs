@@ -22,13 +22,13 @@ const compat = new FlatCompat({
 export default [
   // Base recommended rules
   js.configs.recommended,
-  
+
   // Airbnb base configuration (using FlatCompat for legacy format)
   ...compat.extends('airbnb-base'),
-  
+
   // Prettier integration (must come after airbnb to override formatting rules)
   ...compat.extends('prettier'),
-  
+
   // Main configuration
   {
     languageOptions: {
@@ -45,7 +45,7 @@ export default [
         process: 'readonly',
         console: 'readonly',
         Buffer: 'readonly',
-        
+
         // Jest globals
         afterAll: 'readonly',
         afterEach: 'readonly',
@@ -61,16 +61,16 @@ export default [
         xtest: 'readonly',
       },
     },
-    
+
     plugins: {
       jest: jestPlugin,
     },
-    
+
     rules: {
       // Enforce strict mode in appropriate contexts
       // Using 'safe' instead of 'global' for better module compatibility
-      'strict': ['error', 'safe'],
-      
+      strict: ['error', 'safe'],
+
       // Prevent warning comments that could bypass quality gates
       // This prevents TODO/FIXME with eslint-disable or nosonar
       'no-warning-comments': [
@@ -80,7 +80,7 @@ export default [
           location: 'anywhere',
         },
       ],
-      
+
       // Allow scoped imports/requires for better module organization
       'import/no-extraneous-dependencies': [
         'error',
@@ -90,10 +90,10 @@ export default [
           peerDependencies: false,
         },
       ],
-      
+
       // Jest recommended rules
       ...jestPlugin.configs.recommended.rules,
-      
+
       // ============================================
       // PLACEHOLDER: Individual Rule Overrides
       // ============================================
@@ -105,26 +105,26 @@ export default [
       // ============================================
     },
   },
-  
+
   // Test files configuration
   {
     files: ['**/__tests__/**/*', '**/*.{spec,test}.{js,jsx,ts,tsx,mjs,cjs}'],
-    
+
     plugins: {
       jest: jestPlugin,
     },
-    
+
     languageOptions: {
       globals: {
         // Jest globals already defined in main config
       },
     },
-    
+
     rules: {
       // Allow scoped requires in test files
       'global-require': 'off',
       'import/no-dynamic-require': 'off',
-      
+
       // ============================================
       // PLACEHOLDER: Test-Specific Rule Overrides
       // ============================================

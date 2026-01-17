@@ -9,31 +9,25 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
-  
-  extends: [
-    'airbnb-base',
-    'plugin:jest/recommended',
-    'prettier',
-  ],
-  
-  plugins: [
-    'jest',
-  ],
-  
+
+  extends: ['airbnb-base', 'plugin:jest/recommended', 'prettier'],
+
+  plugins: ['jest'],
+
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
   },
-  
+
   globals: {
     // Jest globals are handled by 'jest/globals' env
   },
-  
+
   rules: {
     // Enforce strict mode in appropriate contexts
     // Using 'safe' instead of 'global' for better module compatibility
-    'strict': ['error', 'safe'],
-    
+    strict: ['error', 'safe'],
+
     // Prevent warning comments that could bypass quality gates
     // This prevents TODO/FIXME with eslint-disable or nosonar
     'no-warning-comments': [
@@ -43,7 +37,7 @@ module.exports = {
         location: 'anywhere',
       },
     ],
-    
+
     // Allow scoped imports/requires for better module organization
     'import/no-extraneous-dependencies': [
       'error',
@@ -53,7 +47,7 @@ module.exports = {
         peerDependencies: false,
       },
     ],
-    
+
     // ============================================
     // PLACEHOLDER: Individual Rule Overrides
     // ============================================
@@ -64,7 +58,7 @@ module.exports = {
     // 'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     // ============================================
   },
-  
+
   overrides: [
     // Jest test files
     {
@@ -76,7 +70,7 @@ module.exports = {
         // Allow scoped requires in test files
         'global-require': 'off',
         'import/no-dynamic-require': 'off',
-        
+
         // ============================================
         // PLACEHOLDER: Test-Specific Rule Overrides
         // ============================================

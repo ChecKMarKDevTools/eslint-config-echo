@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial dual ESLint configuration supporting both v8 (CommonJS) and v9 (ESM/Flat Config)
 - Integration with eslint-config-airbnb-base for industry-standard JavaScript style guide
 - Jest plugin with pre-configured globals for test environments
