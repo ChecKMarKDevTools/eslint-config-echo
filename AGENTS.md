@@ -34,18 +34,18 @@
 
 ### Commitlint Footer Rules
 
-**NOTE:** The custom plugin rules are currently commented out in `commitlint.config.js` because the plugin is not available:
+**NOTE:** The custom plugin rules are currently commented out in `commitlint.config.mjs` because the plugin is not available:
 
 ```javascript
 // 'rai-footer-exists': [2, 'always'],
-// 'signed-off-by-exists': [1, 'always'],
+// 'signed-off-by': [1, 'always', 'Signed-off-by:'],
 ```
 
 - These rules would enforce required Git trailers for all commits
 - Plugin `@checkmarkdevtools/commitlint-plugin-rai` is a **custom internal plugin**
 - It is NOT published to npm and will not be found in package.json
 - The plugin and rules are commented out to allow commitlint to run without errors
-- When the plugin becomes available, uncomment the plugin reference and rules in `commitlint.config.js`
+- When the plugin becomes available, uncomment the plugin reference and rules in `commitlint.config.mjs`
 
 ### Node.js Version
 
@@ -88,7 +88,7 @@ Latest verified versions (January 2026):
 - coverage output (for Codecov)
 - JUnit XML output (for artifacts)
 
-3. Smoke test matrix on Node 20/22/24
+3. Node 24.x execution (single-version matrix)
 
 ### Release Workflow (`.github/workflows/release-please.yml`)
 
@@ -186,7 +186,7 @@ npm run format  # auto-fix
 ### 2. Commitlint Plugin Not Found
 
 **Symptom:** Error about `@checkmarkdevtools/commitlint-plugin-rai` not found causing commitlint to fail
-**Fix:** The plugin is internal and not available. The plugin reference and its rules have been commented out in `commitlint.config.js` to allow commitlint to run. When the plugin becomes available, the references can be uncommented.
+**Fix:** The plugin is internal and not available. The plugin reference and its rules have been commented out in `commitlint.config.mjs` to allow commitlint to run. When the plugin becomes available, the references can be uncommented.
 
 ### 3. NPM_TOKEN Secret Warning
 

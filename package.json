@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "hooks:install": "lefthook install",
-    "test": "node -e \"require('node:fs').mkdirSync('test-results',{recursive:true})\" && c8 --reporter=lcov --reporter=text node --test --test-reporter=junit --test-reporter-destination=test-results/junit.xml",
+    "test": "node -e \"require('node:fs').mkdirSync('test-results',{recursive:true})\" && c8 node --test --test-reporter=junit --test-reporter-destination=test-results/junit.xml",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -67,6 +67,24 @@
     "jest": "^30.2.0",
     "lefthook": "^2.0.15",
     "prettier": "^3.8.0"
+  },
+  "c8": {
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "report-dir": "coverage",
+    "exclude": [
+      "coverage/**",
+      "examples/**",
+      "test/**",
+      "tmp/**"
+    ],
+    "check-coverage": true,
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90
   },
   "repository": {
     "type": "git",
