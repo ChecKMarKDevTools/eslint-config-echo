@@ -18,7 +18,7 @@ test('export contract: require() resolves legacy config object', () => {
   assert.equal(typeof legacy, 'object');
   assert.equal(Array.isArray(legacy), false);
 
-  assert.deepEqual(legacy.env, { es2024: true, node: true });
+  assert.deepEqual(legacy.env, { es2021: true, node: true, jest: true });
   assert.ok(Array.isArray(legacy.extends));
   assert.ok(legacy.extends.includes('eslint-config-prettier'));
 

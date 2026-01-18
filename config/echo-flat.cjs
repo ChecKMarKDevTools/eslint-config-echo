@@ -6,7 +6,6 @@
 
 const globals = require('globals');
 const { FlatCompat } = require('@eslint/eslintrc');
-const path = require('path');
 
 const unusedImports = require('eslint-plugin-unused-imports');
 const sonarjs = require('eslint-plugin-sonarjs');
@@ -86,7 +85,7 @@ const cjsFiles = {
 };
 
 const testRules = {
-  files: ['test/**/*.{js,mjs,cjs}', '**/*.{spec,test}.{js,mjs,cjs}', '**/*test*.{js,mjs,cjs}'],
+  files: ['test/**/*.{js,mjs,cjs}', '**/*.{spec,test}.{js,mjs,cjs}'],
   rules: {
     'no-restricted-syntax': [
       'error',

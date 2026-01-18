@@ -50,7 +50,7 @@
 ### Node.js Version
 
 - **Minimum:** Node.js >=24 (specified in `package.json` `engines` field)
-- **CI/CD:** CI runs smoke tests on Node 20/22/24, but the published package target is Node >=24
+- **CI/CD:** CI runs on Node 24.x (matching the published package target: Node >=24)
 - **Volta pin:** Node 24.13.0
 
 ### GitHub Actions Version Standards
@@ -230,7 +230,7 @@ When modifying this repository, verify:
 - [ ] Node.js version remains >=24 in all configs
 - [ ] Commitlint footer rules remain intact
 - [ ] Prettier runs before tests in CI
-- [ ] CI runs Node 20/22/24 smoke tests
+- [ ] CI runs on Node 24.x
 - [ ] Workflow uses latest action versions (check Context7 if uncertain)
 - [ ] Concurrency and draft PR filters are present in workflows
 - [ ] Job-level permissions follow least privilege principle

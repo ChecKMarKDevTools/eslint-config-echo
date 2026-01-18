@@ -55,7 +55,7 @@ module.exports = {
       },
     },
     {
-      files: ['test/**/*.{js,mjs,cjs}', '**/*.{spec,test}.{js,mjs,cjs}', '**/*test*.{js,mjs,cjs}'],
+      files: ['test/**/*.{js,mjs,cjs}', '**/*.{spec,test}.{js,mjs,cjs}'],
       rules: {
         'no-restricted-syntax': [
           'error',
