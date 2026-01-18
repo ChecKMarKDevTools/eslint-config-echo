@@ -8,7 +8,7 @@
 
 **Package:** `@checkmarkdevtools/eslint-config-echo`
 **Type:** Shareable ESLint configuration (dual v8/v9 support)
-**Architecture:** CommonJS with ESM wrapper for flat config
+**Architecture:** CommonJS package shipping both legacy (v8) and flat-config (v8/v9) entrypoints
 **Target:** Node.js >=24
 
 ### Product Config (what consumers install and use)
@@ -16,13 +16,13 @@
 **Files that ship to consumers:**
 
 - **`index.js`** - ESLint v8 legacy config (CommonJS, exports object)
-- **`eslint.config.mjs`** - ESLint v9+ flat config wrapper (ESM)
-- **`eslint.config.cjs`** - ESLint v9+ flat config wrapper (CJS)
+- **`eslint.config.mjs`** - ESLint flat config wrapper (ESM)
+- **`eslint.config.cjs`** - ESLint flat config wrapper (CJS)
 - **`config/echo-flat.cjs`** - flat config implementation consumed by both wrappers
 
 **What the shipped config includes:**
 
-- Prettier enforcement
+- Prettier-first formatting (flat config enforces via `eslint-plugin-prettier`)
 - SonarJS recommended rules
 - `unused-imports` plugin
 - YAML linting (`eslint-plugin-yml`)
@@ -86,9 +86,15 @@ Latest verified versions (January 2026):
 2. Tests (`npm test`) including:
 
 - coverage output (for Codecov)
-- JUnit XML output (for artifacts)
+- JUnit XML output (for artifacts and Codecov test results)
 
 3. Node 24.x execution (single-version matrix)
+
+**Coverage gates (enforced locally + CI):**
+
+- `c8` runs as part of `npm test`
+- `check-coverage` is enabled with 90% minimum thresholds for lines/statements/functions/branches
+- Coverage and other generated outputs are excluded via the `c8` config in `package.json`
 
 ### Release Workflow (`.github/workflows/release-please.yml`)
 
@@ -107,13 +113,20 @@ Latest verified versions (January 2026):
 "exports": {
   ".": {
     "import": "./eslint.config.mjs",
-    "require": "./index.js"
+    "require": "./index.js",
+    "default": "./eslint.config.mjs"
+  },
+  "./flat": {
+    "import": "./eslint.config.mjs",
+    "require": "./eslint.config.cjs",
+    "default": "./eslint.config.mjs"
   }
 }
 ```
 
 - **CommonJS consumers** (ESLint v8): Get `index.js`
-- **ESM consumers** (ESLint v9): Get `eslint.config.mjs`
+- **ESM consumers** (ESLint v9+): Get `eslint.config.mjs`
+- **Consumers wanting flat config explicitly**: Use `@checkmarkdevtools/eslint-config-echo/flat`
 
 ### Published Files
 
@@ -133,7 +146,8 @@ Only the following are included in the npm package:
 ### Prettier First
 
 - **Prettier is the source of truth** for all formatting
-- ESLint integrates via `eslint-plugin-prettier`
+- Flat config enforces Prettier via `eslint-plugin-prettier/recommended`
+- Legacy config disables conflicting formatting rules via `eslint-config-prettier` (it does not enforce formatting)
 - **DO NOT** enable ESLint formatting rules that conflict with Prettier
 - Sonar's `enforce-trailing-comma` is disabled to prevent conflicts
 
@@ -159,6 +173,11 @@ Test files (`**/*.{spec,test}.js`, `test/**/*.js`) have special rules:
 
 1. Format: `npm run format`
 2. Validate: `npm test`
+
+- Runs Node's built-in test runner (`node --test`)
+- Emits JUnit XML to `test-results/junit.xml`
+- Enforces coverage thresholds via `c8`
+
 3. Check trailers: Ensure commit message includes:
    - `Assisted-by:` or `Generated-by:` (required by `rai-footer-exists`)
    - `Signed-off-by:` (warning level expected)
@@ -203,6 +222,11 @@ npm run format  # auto-fix
 **Symptom:** Code passes Prettier but fails ESLint (or vice versa)
 **Fix:** Ensure `eslint-plugin-prettier/recommended` is **last** in config array
 
+### 6. Coverage Threshold Failures
+
+**Symptom:** `npm test` fails due to insufficient coverage
+**Fix:** Increase test coverage or adjust exclusions/thresholds in the `c8` config block in `package.json`
+
 ---
 
 ## Key Design Decisions
@@ -238,5 +262,5 @@ When modifying this repository, verify:
 
 ---
 
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-01-18
 **Maintained for:** AI agent consumption (Copilot, ChatGPT, etc.)
