@@ -5,28 +5,53 @@
 // - ESLint v8 via `eslint.config.cjs` (CJS wrapper)
 
 const globals = require('globals');
+const { FlatCompat } = require('@eslint/eslintrc');
+const path = require('path');
 
 const unusedImports = require('eslint-plugin-unused-imports');
 const sonarjs = require('eslint-plugin-sonarjs');
 const yml = require('eslint-plugin-yml');
+const jestPlugin = require('eslint-plugin-jest');
+const importPlugin = require('eslint-plugin-import');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+
+// Initialize FlatCompat for legacy config compatibility
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 const ignores = ['build/**', 'node_modules/**', 'playwright-report/**', 'test-results/**'];
 
 const jsRules = {
   files: ['**/*.{js,mjs,cjs}'],
   languageOptions: {
-    ecmaVersion: 2024,
+    ecmaVersion: 2022,
     sourceType: 'module',
     globals: {
       ...globals.node,
-      ...globals.es2024,
+      ...globals.es2021,
+      // Jest globals for test environments
+      afterAll: 'readonly',
+      afterEach: 'readonly',
+      beforeAll: 'readonly',
+      beforeEach: 'readonly',
+      describe: 'readonly',
+      expect: 'readonly',
+      it: 'readonly',
+      jest: 'readonly',
+      test: 'readonly',
+      fit: 'readonly',
+      xit: 'readonly',
+      xtest: 'readonly',
     },
   },
   plugins: {
     'unused-imports': unusedImports,
+    jest: jestPlugin,
+    import: importPlugin,
   },
   rules: {
+    strict: ['error', 'safe'],
     'no-console': 'error',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'func-style': ['error', 'expression', { allowArrowFunctions: true }],
@@ -34,6 +59,22 @@ const jsRules = {
     'no-var': 'error',
     'unused-imports/no-unused-imports': 'error',
     'no-unsafe-optional-chaining': 'error',
+    'no-warning-comments': [
+      'error',
+      {
+        terms: ['eslint-disable', 'eslint-disable-next-line', 'eslint-disable-line', 'nosonar'],
+        location: 'anywhere',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
+    ...jestPlugin.configs.recommended.rules,
   },
 };
 
@@ -79,6 +120,8 @@ const sonarOverrides = {
 
 module.exports = [
   { ignores },
+  // Airbnb base configuration (using FlatCompat for legacy format)
+  ...compat.extends('airbnb-base'),
   jsRules,
   // Sonar baseline ("recommended") for quality rules. (Prettier still wins formatting conflicts.)
   sonarRecommended,

@@ -6,20 +6,23 @@
 
 module.exports = {
   env: {
-    es2024: true,
+    es2021: true,
     node: true,
+    // Jest globals for test environments
+    jest: true,
   },
 
-  extends: ['eslint-config-prettier'],
+  extends: ['airbnb-base', 'eslint-config-prettier'],
 
-  plugins: ['unused-imports', 'sonarjs', 'yml'],
+  plugins: ['unused-imports', 'sonarjs', 'yml', 'jest', 'import'],
 
   parserOptions: {
-    ecmaVersion: 2024,
+    ecmaVersion: 2022,
     sourceType: 'module',
   },
 
   rules: {
+    strict: ['error', 'safe'],
     'no-console': 'error',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'func-style': ['error', 'expression', { allowArrowFunctions: true }],
@@ -27,6 +30,21 @@ module.exports = {
     'no-var': 'error',
     'unused-imports/no-unused-imports': 'error',
     'no-unsafe-optional-chaining': 'error',
+    'no-warning-comments': [
+      'error',
+      {
+        terms: ['eslint-disable', 'nosonar'],
+        location: 'anywhere',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
   },
 
   overrides: [

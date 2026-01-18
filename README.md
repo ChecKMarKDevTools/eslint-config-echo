@@ -29,7 +29,7 @@ Enterprise ESLint config package that ships dual v8/v9 flat-config presets align
 
 - 🔄 **Dual ESLint Support**: Works with ESLint v8 (CJS) and v9 (ESM) using flat config
 - ✨ **Prettier Enforced**: Runs Prettier as an ESLint rule (`prettier/prettier`) and disables conflicting formatting rules
-- 🧠 **Sonar Baseline**: Includes `eslint-plugin-sonarjs` recommended rules (Sonar-ish defaults)
+- 🧠 **Sonar Baseline**: Includes `eslint-plugin-sonarjs` recommended rules for code-smell detection; this config **also enforces** ESLint's `no-warning-comments` rule, so `// nosonar` and `/* eslint-disable */` comments will trigger errors to maintain quality gates
 - 🧹 **Unused Imports**: Flags dead imports (`eslint-plugin-unused-imports`)
 - 🧾 **YAML Linting**: Includes `eslint-plugin-yml` recommended rules
 
