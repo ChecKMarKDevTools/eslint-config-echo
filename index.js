@@ -33,7 +33,7 @@ module.exports = {
     'no-warning-comments': [
       'error',
       {
-        terms: ['eslint-disable', 'nosonar'],
+        terms: ['eslint-disable', 'eslint-disable-next-line', 'eslint-disable-line', 'nosonar'],
         location: 'anywhere',
       },
     ],
