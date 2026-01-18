@@ -1,4 +1,4 @@
-fix: align implementation with PR description - add airbnb-base, jest, import plugins
+fix: align implementation with PR description
 
 - Add missing dependencies: eslint-config-airbnb-base, eslint-plugin-jest, eslint-plugin-import, @eslint/eslintrc
 - Change ECMAScript version from 2024 to 2022 in both v8 and v9 configs
