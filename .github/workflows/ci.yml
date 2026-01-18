@@ -14,13 +14,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  checks:
     if: github.event.pull_request.draft == false || github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       id-token: write
       contents: read
+
     strategy:
       matrix:
         node-version: [24.x]
@@ -35,55 +36,27 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Check formatting
+        if: matrix.node-version == '24.x'
         run: npm run format:check
 
-      - name: Lint with ESLint v8 (Legacy)
-        run: ESLINT_USE_FLAT_CONFIG=false npx eslint index.js commitlint.config.js
+      - name: Run tests
+        run: npm test
 
-      - name: Lint with ESLint v9 (Flat Config)
-        run: npx eslint eslint.config.mjs --config eslint.config.mjs
+      - name: Upload test results (JUnit)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-node-${{ matrix.node-version }}
+          path: test-results/junit.xml
+          if-no-files-found: error
 
       - name: Upload coverage to Codecov
+        if: matrix.node-version == '24.x'
         uses: codecov/codecov-action@v5
         with:
           use_oidc: true
           fail_ci_if_error: false
-
-  test-configs:
-    if: github.event.pull_request.draft == false || github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Test ESLint v8 config loads
-        run: |
-          cat > .eslintrc.test.json << 'EOF'
-          {
-            "extends": ["./index.js"]
-          }
-          EOF
-          echo "module.exports = { test: true };" > test.js
-          ESLINT_USE_FLAT_CONFIG=false npx eslint test.js --config .eslintrc.test.json
-          rm test.js .eslintrc.test.json
-
-      - name: Test ESLint v9 config loads
-        run: |
-          echo "export const test = true;" > test.mjs
-          npx eslint test.mjs --config eslint.config.mjs
-          rm test.mjs
+          files: coverage/lcov.info

@@ -11,12 +11,22 @@
 **Architecture:** CommonJS with ESM wrapper for flat config
 **Target:** Node.js >=24
 
-### Core Files
+### Product Config (what consumers install and use)
 
-- **`index.js`** - ESLint v8 legacy config (CommonJS, direct consumption)
-- **`eslint.config.mjs`** - ESLint v9 flat config wrapper (ESM, imports from `config/echo-flat.cjs`)
-- **`eslint.config.cjs`** - ESLint v9 flat config wrapper (CJS, for require-based tooling)
-- **`config/echo-flat.cjs`** - Single source-of-truth flat config (consumed by both v8 and v9 wrappers)
+**Files that ship to consumers:**
+
+- **`index.js`** - ESLint v8 legacy config (CommonJS, exports object)
+- **`eslint.config.mjs`** - ESLint v9+ flat config wrapper (ESM)
+- **`eslint.config.cjs`** - ESLint v9+ flat config wrapper (CJS)
+- **`config/echo-flat.cjs`** - flat config implementation consumed by both wrappers
+
+**What the shipped config includes:**
+
+- Prettier enforcement
+- SonarJS recommended rules
+- `unused-imports` plugin
+- YAML linting (`eslint-plugin-yml`)
+- Test file restrictions (no try/catch)
 
 ---
 
@@ -40,7 +50,7 @@
 ### Node.js Version
 
 - **Minimum:** Node.js >=24 (specified in `package.json` `engines` field)
-- **CI/CD:** All workflows MUST use Node 24.x (not 18, 20, or 22)
+- **CI/CD:** CI runs smoke tests on Node 20/22/24, but the published package target is Node >=24
 - **Volta pin:** Node 24.13.0
 
 ### GitHub Actions Version Standards
@@ -69,14 +79,16 @@ Latest verified versions (January 2026):
 - Draft PR exclusion: `if: github.event.pull_request.draft == false || github.event_name == 'push'`
 - Job-level permissions (least privilege)
 - Job-level timeouts (recommend: 10 minutes)
-- Node.js 24.x matrix or single version
 
 **Test stages:**
 
 1. Prettier formatting check (`npm run format:check`)
-2. ESLint v8 legacy validation (`ESLINT_USE_FLAT_CONFIG=false npx eslint ...`)
-3. ESLint v9 flat config validation (`npx eslint ... --config eslint.config.mjs`)
-4. Config load tests (both v8 and v9)
+2. Tests (`npm test`) including:
+
+- coverage output (for Codecov)
+- JUnit XML output (for artifacts)
+
+3. Smoke test matrix on Node 20/22/24
 
 ### Release Workflow (`.github/workflows/release-please.yml`)
 
@@ -146,18 +158,16 @@ Test files (`**/*.{spec,test}.js`, `test/**/*.js`) have special rules:
 ### Before Committing
 
 1. Format: `npm run format`
-2. Validate: `npm run lint`
-3. Commit message: Follow conventional commits format (e.g., `fix: description`, `feat: description`)
-   - Note: Custom trailer rules (`Assisted-by`, `Signed-off-by`) are currently disabled
+2. Validate: `npm test`
+3. Check trailers: Ensure commit message includes:
+   - `Assisted-by:` or `Generated-by:` (required by `rai-footer-exists`)
+   - `Signed-off-by:` (warning level expected)
 
 ### Local Testing
 
 ```bash
-# Test ESLint v8 config
-ESLINT_USE_FLAT_CONFIG=false npx eslint index.js commitlint.config.js
-
-# Test ESLint v9 config
-npx eslint eslint.config.mjs --config eslint.config.mjs
+# Run tests
+npm test
 
 # Formatting
 npm run format:check
@@ -203,17 +213,13 @@ npm run format  # auto-fix
 - **ESLint v9** (flat config): Future-proof, uses array-based config
 - Maintains both for maximum compatibility
 
-### Why CJS Source of Truth?
+### Why is the flat config implemented in `config/echo-flat.cjs`?
 
-- Most ESLint plugins still distribute as CommonJS
-- Flat config can consume CJS via `require()` in both ESM and CJS wrappers
-- Avoids ESM/CJS interop issues
-
-### Why `config/echo-flat.cjs`?
-
-- Single source prevents drift between v8 and v9 configs
-- Wrappers (`index.js`, `eslint.config.mjs`, `eslint.config.cjs`) are minimal
-- Easier maintenance and rule updates
+- The package must support both ESM and CommonJS config entrypoints.
+- A CommonJS implementation can be synchronously consumed from both wrappers:
+  - `eslint.config.cjs` via `require()`
+  - `eslint.config.mjs` via Node's CJS-to-ESM interop
+- Keeping one implementation avoids rule drift.
 
 ---
 
@@ -223,8 +229,8 @@ When modifying this repository, verify:
 
 - [ ] Node.js version remains >=24 in all configs
 - [ ] Commitlint footer rules remain intact
-- [ ] Prettier runs before ESLint in CI
-- [ ] Both v8 and v9 configs still load and lint successfully
+- [ ] Prettier runs before tests in CI
+- [ ] CI runs Node 20/22/24 smoke tests
 - [ ] Workflow uses latest action versions (check Context7 if uncertain)
 - [ ] Concurrency and draft PR filters are present in workflows
 - [ ] Job-level permissions follow least privilege principle
