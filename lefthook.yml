@@ -8,6 +8,7 @@ pre-commit:
       priority: 1
       glob: '*.{js,mjs,cjs,json,md,yml,yaml}'
       run: npm run format
+      stage_fixed: true
 
     test:
       priority: 2

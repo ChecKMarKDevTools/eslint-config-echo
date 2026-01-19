@@ -1,40 +1,20 @@
-name: CodeQL
+name: CodeQL (disabled)
+
+# This repository uses GitHub's Code Scanning autosetup instead of a custom CodeQL workflow.
+# Keeping this file manual-only avoids unexpected CI noise while preserving history.
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
+
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  analyze:
-    if: github.event.pull_request.draft == false || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+  noop:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    permissions:
-      contents: read
-      actions: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [javascript]
-
+    timeout-minutes: 1
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-
-      - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v3
+      - run: echo "CodeQL workflow disabled; use GitHub Code Scanning autosetup."

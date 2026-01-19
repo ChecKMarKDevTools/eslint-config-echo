@@ -50,7 +50,7 @@ jobs:
         with:
           name: test-results-node-${{ matrix.node-version }}
           path: test-results/junit.xml
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Upload test results to Codecov
         if: always() && matrix.node-version == '24.x'

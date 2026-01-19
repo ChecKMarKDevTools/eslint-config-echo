@@ -4,6 +4,7 @@
       "release-type": "node",
       "package-name": "@checkmarkdevtools/eslint-config-echo",
       "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.0.1",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "draft": false,
