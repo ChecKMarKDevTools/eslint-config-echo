@@ -1,0 +1,20 @@
+# Lefthook configuration
+# See: https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: false
+  commands:
+    format:
+      priority: 1
+      glob: '*.{js,mjs,cjs,json,md,yml,yaml}'
+      run: npm run format
+      stage_fixed: true
+
+    test:
+      priority: 2
+      run: npm test
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx --no -- commitlint --edit {1}
