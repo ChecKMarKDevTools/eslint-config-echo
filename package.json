@@ -1,6 +1,6 @@
 {
   "name": "@checkmarkdevtools/eslint-config-echo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Enterprise ESLint config package that ships dual v8/v9 flat-config presets aligned to Prettier-first formatting, Sonar, and Jest workflows",
   "type": "commonjs",
   "main": "index.js",
