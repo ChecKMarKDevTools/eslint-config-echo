@@ -7,10 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.0.1 (2026-01-21)
 
-
 ### Features
 
-* Create dual ESLint config ([0a7e184](https://github.com/ChecKMarKDevTools/eslint-config-echo/commit/0a7e184dfc29d59a55623f70e8cdb00a0be222e1))
+- Create dual ESLint config ([0a7e184](https://github.com/ChecKMarKDevTools/eslint-config-echo/commit/0a7e184dfc29d59a55623f70e8cdb00a0be222e1))
 
 ## [Unreleased]
 
